@@ -10,15 +10,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 builder.Services.AddDbContext<ProjectOverviewContext>(options =>
     options.UseSqlServer("name=ConnectionStrings:dbOverView",
     sqlServerOptionsAction: sqlOptions =>
@@ -28,8 +19,21 @@ builder.Services.AddDbContext<ProjectOverviewContext>(options =>
             maxRetryDelay: TimeSpan.FromSeconds(5),
             errorNumbersToAdd: null);
     }));
+
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
+
 
 app.UseHttpsRedirection();
 
