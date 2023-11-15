@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ProjectOverview;
+using ProjectOverview.Implementantion;
+using ProjectOverview.Interface;
 using ProjectOverview.Models;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Read Connection String
 builder.Services.AddDbContext<ProjectOverviewContext>(options =>
-    options.UseSqlServer("name=ConnectionStrings:dbOverView",
+    options.UseSqlServer("name=ConnectionStrings:dbOverViewConnString",
     sqlServerOptionsAction: sqlOptions =>
     {
         sqlOptions.EnableRetryOnFailure(
@@ -20,8 +26,18 @@ builder.Services.AddDbContext<ProjectOverviewContext>(options =>
             errorNumbersToAdd: null);
     }));
 
+var RedisConfig = builder.Configuration.GetSection("RedisConnString").Get<RedisConnString>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp => ConnectionMultiplexer.Connect(new ConfigurationOptions
+{
+    EndPoints = { $"{RedisConfig.Host}:{RedisConfig.Port}" },
+    AbortOnConnectFail = false,
+    AllowAdmin = true,
+}));
+
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IMyProject, MyProject>();
 
 var app = builder.Build();
 
@@ -31,9 +47,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
-
 
 app.UseHttpsRedirection();
 
