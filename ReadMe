@@ -1,0 +1,49 @@
+#Project Overview
+This Project has two main Tasks.The first one aims to find the secod largest integer within an array given.The second one aims on retrieving country information from a 3rd party API then save it to a database and cache it in Redis.
+
+##GetSecondLargest Functionality
+**Input:** Takes a 'RequestObj' object containing an array of intgers 
+
+**Output:** Returns the second-largest integer in the array or `null` in the following cases:
+   When the input `request` is `null`.
+   When the input array contains fewer than two distinct elements.
+
+##GetSecondLargest Implementation
+**Input Validation:** Checks if the `request` object is not null. If it is null,it returns null.
+
+**Duplicate Removal and Sorting:** Removes duplicate elements from the input array (`request.RequestArrayObj`) and orders the array in descending order.
+
+**Finding Second-Largest:** Checks if the ordered array has at least two elements. If it does, returns the second element, which is the second-largest integer. Otherwise, returns null.
+
+##GetAllCountries Functionality
+**Database** Saves the countries information retrieved from the 3rd party API in a database table
+
+**Cache** Caches the countries information in Redis
+
+**Output** Returns all the countries information
+
+##GetAllCountries Implementation
+**Redis Cache Handling:** Checks Redis cache to see if country data exists.
+  If found in cache, retrieves data from Redis and returns it.
+  If not found, proceeds to database check.
+  Utilizes Redis cache to store and retrieve country information.
+  Deletes existing keys related to countries before caching new data.
+
+**Database Operations:**
+  Queries the database to see if country data exists.
+  If found in the database, retrieves data and returns it.
+  If not found in the database, fetches data from a third-party API and transforms it into `CountryInfo` objects.
+  Uses Entity Framework Core to interact with the database.
+  Stores country details in the `Countries` table.
+
+**Third-Party API:**
+  Fetches country data from `https://restcountries.com/v3.1/all`.
+
+**Error Handling:**
+  Catches generic exceptions and returns an empty list of `CountryInfo` in case of any exceptions.
+
+### Technologies Used
+**ASP.NET Core:** The project uses ASP.NET Core framework for handling HTTP requests and responses.
+**Entity Framework Core:** For database connection and operations.
+**StackExchange.Redis:** Used to interact with Redis cache.
+**Newtonsoft.Json:** Used for JSON serialization/deserialization.
