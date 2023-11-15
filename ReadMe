@@ -26,15 +26,12 @@ This Project has two main Tasks.The first one aims to find the secod largest int
 **Redis Cache Handling:** Checks Redis cache to see if country data exists.
   If found in cache, retrieves data from Redis and returns it.
   If not found, proceeds to database check.
-  Utilizes Redis cache to store and retrieve country information.
-  Deletes existing keys related to countries before caching new data.
 
 **Database Operations:**
   Queries the database to see if country data exists.
   If found in the database, retrieves data and returns it.
   If not found in the database, fetches data from a third-party API and transforms it into `CountryInfo` objects.
   Uses Entity Framework Core to interact with the database.
-  Stores country details in the `Countries` table.
 
 **Third-Party API:**
   Fetches country data from `https://restcountries.com/v3.1/all`.
