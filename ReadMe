@@ -1,5 +1,5 @@
 #Project Overview
-This Project has two main Tasks.The first one aims to find the secod largest integer within an array given.The second one aims on retrieving country information from a 3rd party API then save it to a database and cache it in Redis.
+This Project has two main Tasks.The first one aims to find the second largest integer within an array given.The second one aims on retrieving country information from a 3rd party API then save it to a database and cache it in Redis.
 
 ##GetSecondLargest Functionality
 **Input:** Takes a 'RequestObj' object containing an array of intgers 
